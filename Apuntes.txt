@@ -1,0 +1,607 @@
+Clase 1 
+
+public class Principal
+{
+        public static double s(double h, double a, double b)
+        {
+                double suma = 0;
+                double i = a/h;
+                return (h >= b - a) ? 0 : (suma += (Math.exp(Math.pow(i*h, 2)) * h) + s(h, a+h, b));
+        }//esto de arriba es una estructura selectiva hecho de otra forma que yo uso, si no lo entendéis, os lo explico con if /else.
+
+        public static void main(String[] args)
+        {
+                System.out.println(s(0.1,0,1.0));
+        }
+}
+
+
+.......................
+
+Clase 2
+
+import java.util.function.Function; w
+ 
+public class Main {
+             
+              public static double integral(double a, double b, double h, Function <Double, Double> f)
+              {
+                            if(b - a <= h) return f.apply(a)*h;
+                            else return f.apply(a)*h + integral(a + h, b, h, f);
+                           
+//Forma abreviada:      return (b-a <= h) ? f.apply(a) * h : f.apply(a)*h + integral(a+h, b, h, f);
+              }
+             
+              public static void main(String[] args)
+              {
+                            System.out.println(integral(0, 1, 0.1, x -> Math.exp(Math.pow(x, 2))));//expresión lambda. :D
+              }
+             
+}
+
+.........................
+
+Clase 3
+
+CLASE CENSO 
+
+
+
+package Dominio;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Censo {
+
+	private List<Persona> lista = new ArrayList<>();
+	
+	public void addPersona(Persona persona)
+	{
+		lista.add(persona);
+	}
+	
+	public double mediaEdades()
+	{
+		return lista.stream().map(persona -> persona.calcularEdad()).reduce(0.0, (a, b) -> a + b) / lista.size();
+	}
+	/*
+	public List<Persona> listaJubilados()
+	{
+		ArrayList<Persona> listaJubilados = new ArrayList<>();
+		for(Persona p : lista) {
+		if (p.calcularEdad() >= 65) listaJubilados.add(p);
+		}return listaJubilados;
+	}
+	*/
+	/*public List<Persona> listaJubilados()
+	{
+		ArrayList<Persona> listaJubilados = new ArrayList<>();
+		obtenerJubilados(listaJubilados, lista);
+		return listaJubilados;
+		
+	
+	}
+	private void obtenerJubilados(ArrayList<Persona> listaJubilados, List<Persona> lista)
+	{
+		if((!lista.isEmpty())&&(lista.get(0).calcularEdad() >= 65)) {
+		listaJubilados.add(lista.get(0));
+		obtenerJubilados(listaJubilados, lista.subList(1, lista.size()));
+		}
+		else if (!lista.isEmpty()){
+		obtenerJubilados(listaJubilados, lista.subList(1, lista.size()));
+		}
+		
+	}*/
+	public List<Persona> listaJubilados()
+	{
+		return lista.stream().filter(p -> p.calcularEdad() >= 65).collect(Collectors.toList());
+	}
+	
+	public String toString()
+	{
+	StringBuilder sb = new StringBuilder();
+	
+	for(Persona persona : lista) sb.append(persona);	
+	
+	return sb.toString() + " \n\nLa media de las edades es: " + mediaEdades() + "\n\nLos jubilados son: " + listaJubilados();
+	}
+	
+	//sublist: [5, 8, 4, 3, 9, 8]
+	//size = 6
+	//sublist(1, 6);
+
+}
+
+
+
+
+
+CLASE PERSONA 
+
+
+
+
+package Dominio;
+
+import java.time.LocalDate;
+import java.time.Period;
+
+
+
+public class Persona {
+
+	private String nombre;
+	private LocalDate fechaNacimiento;
+	
+	
+	public Persona(String nombre, LocalDate fechaNacimiento)
+	{
+		this.nombre = nombre;
+		this.fechaNacimiento = fechaNacimiento;
+	}
+	
+	public Persona() {
+	}
+
+	public double calcularEdad()
+	{
+		return Period.between(fechaNacimiento, LocalDate.now()).getYears();
+	}
+	
+	
+
+	public String toString()
+	{
+		return "\n"+ nombre + " tiene " + calcularEdad() + " años.";
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+	
+	
+
+	
+	
+}
+
+CLASE PRINCIPAL
+
+
+
+package Aplicacion;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+
+import Dominio.*;
+
+public class Principal {
+
+	public static void main(String[] args)
+	{
+		
+	
+	Persona p = new Persona("Javier Linares ", LocalDate.of(2000, Month.FEBRUARY, 5));
+	Persona p1 = new Persona("Alicia Hidalgo", LocalDate.of(2000, Month.SEPTEMBER, 29));
+	Persona p2= new Persona("Pablo Regodón", LocalDate.of(2000, Month.SEPTEMBER, 18));
+	Persona p3 = new Persona("Sonia de Antonio ", LocalDate.of(2000, Month.FEBRUARY, 11));
+	
+	
+	Censo c = new Censo();
+	
+	c.addPersona(p);	c.addPersona(p1);	c.addPersona(p2);	c.addPersona(p3);	
+
+
+	
+	System.out.println(c + " " );
+		
+			
+}
+}
+
+.................................
+
+Clase 4
+
+Calcular con bucles el jubilado:
+ 
+public List<Persona> listaJubilados()
+              {
+                            ArrayList<Persona> listaJubilados = new ArrayList<>();
+                            for(Persona p : lista) {
+                            if (p.calcularEdad() >= 65) listaJubilados.add(p);
+                            }return listaJubilados;
+              }
+ 
+ 
+//--------------------------------------------------------------------------------------------
+Calcular el problema del jubilado por recursividad:
+ 
+public List<Persona> listaJubilados()
+              {
+                            ArrayList<Persona> listaJubilados = new ArrayList<>();
+                            obtenerJubilados(listaJubilados, lista);
+                            return listaJubilados;
+                           
+             
+              }
+              private void obtenerJubilados(ArrayList<Persona> listaJubilados, List<Persona> lista)
+              {
+                            if((!lista.isEmpty())&&(lista.get(0).calcularEdad() >= 65)) {
+                            listaJubilados.add(lista.get(0));
+                            obtenerJubilados(listaJubilados, lista.subList(1, lista.size()));
+                            }
+                            else if (!lista.isEmpty()){
+                            obtenerJubilados(listaJubilados, lista.subList(1, lista.size()));
+                            }
+                           
+              }
+//------------------------------------------------------
+ 
+Calcular el problema por lambda:
+ 
+public List<Persona> listaJubilados()
+              {
+                            return lista.stream().filter(p -> p.calcularEdad() >= 65).collect(Collectors.toList());
+              }
+
+.................................
+
+Clase 5
+
+
+public class Main {
+
+	
+	
+	/*El tiempo que se necesita para ejecutar el método no depende de la entrada. Se dice que el algoritmo
+	 * implementado por el método tiene complejidad constante.
+	 */
+	
+	/*Ejemplo:
+	 * public static int sumaN(int n)
+	 * {
+	 * int suma = 0;
+	 * for(int i = 0; i <= n; i++) suma += i;
+	 * return suma;
+	 * 
+	 */ 
+	 /*
+	 * Supongamos que n = 1. ¿Cuánto tiempo tarda en ejecutarse el método?
+	 * 
+	 * int suma = 0; --> 1 nano segundo
+	 * int i = 0 --> 1 ns;
+	 *  i <= 1 --> 1 ns
+	 *  suma += i --> 1 ns 
+	 *  
+	 *  TOTAL = 7ns
+	 *  
+	 */
+	
+	
+	/*
+	 * Supongamos n = 8 
+	 * 
+	 * int suma = 0 -->  1ns;
+	 * int i = 0 --> 1 ns;
+	 * i <= 1 --> 9 * 1 ns = 9ns;
+	 * suma += 8 * 1ns = 8ns;
+	 * i++ --> 8 * 1ns = 8ns;
+	 * 
+	 * TOTAL = 1 + 1 + (8 + 1) * 1ns + 8 * 1ns + 8 * 1ns = 27 ms.
+	 */
+	
+	/*Para n = k;
+	 * 
+	 * int suma = 0; --> 1ns;
+	 * int i = 0 --> 1 ns;
+	 * i <= k ---> (k+1) * 1ns;
+	 * suma += i --> k * 1ns;
+	 * i++ --> k * 1ns;
+	 * 
+	 * TOTAL = (3k + 3)ns
+	 * 
+	 * Sea T(k) el tiempo que tarda en ejecutarse el método, T(k) = (3k + 3)ns es una recta, por eso decimos que este algoritmo tiene
+	 * complejidad lineal.
+	 */
+	
+	
+	/*
+	 * Mismo algortimo pero recursivo:
+	 * 
+	 * public static int sumaNRec(int n)
+	 * {
+	 * if(n==1) return 1;
+	 * else return n + sumaNRec(n -1);
+	 * }
+	 * 
+	 * T(1) = k(1)
+	 * T(n) = k(2) + T(n - 1)
+	 * 
+	 * T(n) = k(2) + T(n- 1)
+	 * T(n-1) = k(2) + T(n -2)
+	 * T(n-2) = k(2) + T(n-3)
+	 * 
+	 * T(n - (n -1)) = k(1)
+	 * 
+	 * t(25) k(1) + T(24)
+	 * 
+	 *
+	 *
+	 *
+	 *T(n) = (n-1) * k(1) + k(1)
+	 *T(n) = k(2) * n + k(1) - k(2) //Complejidad lineal
+	 */
+	
+	
+	/*
+	 *¿Cuál es la complejidad de buscar un elemento en un array?
+	 * 
+	 * 
+	 */
+	public static boolean buscar(int e, int[] array)
+	{
+	int a = 0;
+	for(int i = 0; i < array.length; i++)
+	{
+		if(e == array[i]) a++;
+	
+	}
+	if(a != 0) return true;
+	else return false;
+	}
+
+	public static boolean buscarM(int e, int[] array)
+	{
+	boolean encontrado = false;
+	for(int i = 0; i < array.length && !encontrado; i++)
+	{
+		encontrado = e == array[i];
+	
+	}
+	return encontrado;
+	}
+
+	public static boolean busquedaBinaria(int e, int[] array) {
+		return busquedaBinaria(e, array, 0, array.length);
+	}
+
+	private static boolean busquedaBinaria(int e, int[] array, int inicio, int fin) {
+		int medio = (inicio + fin)/2;
+		if (array[medio] == e) return true;
+		else if (array[medio] > e) return busquedaBinaria(e, array, inicio, medio);
+		else return busquedaBinaria(e, array, medio, fin);
+	}
+
+	
+	public static boolean buscarOrdenada(int e, int[] array)
+	{
+	int a = 0;	
+	for(int i = 0; i < array.length; i++)
+	{
+	
+	if((e == array[i])&&(e > array[i])) {
+		a++;
+		i = array.length -1;
+	}
+	
+	}return (a != 0) ? true : false;
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		int[] array = { 2, 4, 6, 8, 10, 12, 19};
+		System.out.println(busquedaBinaria(6, array));//true
+		System.out.println(busquedaBinaria(8, array));//false
+	}
+	
+}
+
+....................................
+
+Clase 6
+
+
+public class Algoritmos03 {
+
+	
+	/*Algoritmo 1:
+	 * 
+	 * 
+	 * public static int sumaN(int n)
+	 * {
+	 * 	int suma = 0;
+	 * for(int i = 1; i i<= n; i++) suma += i;
+	 * return suma;
+	 * }
+	 * 
+	 * 
+	 * 
+	 * Algortimo 2:
+	 * 
+	 * public static int sumaNRec(int n)
+	 * {
+	 * 	if(n == 1) return 1;
+	 * 
+	 * 	else return n + sumaNRec(n - 1);
+	 * }
+	 */
+	
+	
+	/* Complejidad temporal algoritimo 1:
+	 * 
+	 * T(n) = an + b; Complejidad temporal lineal.
+	 */
+	
+	/*Complejidad temporal algortimo 2:
+	 * 
+	 * T(1) = k(1)
+	 * T(n) = K(1) + T(n - 1) ---> T(n) = ab + b   Complejidad lineal.
+	 * 
+	 * 
+	 */
+	
+	/*Complejidad de algoritmo de bucles: 
+	 * 
+	 * Problema de búsqueda secuencial
+	 * 
+	 * Programa un algoritmo que, dados un elemento (asumiendo int) e y un array a,
+	 *  devuelva verdadero si e está en el array, falso en otro caso.
+	 */
+	
+	public static boolean buscarSecuencialmente(int e, int a[])
+	{
+		boolean encontrado = false;
+		
+		for(int i = 0; i < a.length && !encontrado; i++)
+		{
+			encontrado = a[i] == e;
+		}
+		return encontrado;
+	}
+	
+	/*Análisis de la complejidad temporal
+	 * ##Caso peor:
+	 * 
+	 * El elemento no está. La complejidad es lineal.
+	 * 
+	 * ##Caso mejor:
+	 * 
+	 * El elemento está y es el primero. La complejidad es constante.
+	 * 
+	 * ##Caso promedio:
+	 * 			-Posibilidad 1: está el 1º. T(n) : promedio de tiempo.
+	 * 			-Posibilidad 2: está el 2º.	Ti(x) : tiempo posibilidad i.
+	 *			-...
+	 *			-Posibilidad n: está n-ésimo.
+	 *
+	 *
+	 *		T(n) = T1(n) + T2(n) + ... + Tn(n) / n
+	 *
+	 *		T1(n) = K1
+	 *		T2(n) = 2K1 + a2
+	 *		T3(n) = 3K1 + a3
+	 *		Tn(n) = nK1 + an
+	 *
+	 *		Supongamos a1 = a3 = ... = an Entonces
+	 *
+	 *		T1(n) = K1, T2(n) = 2K1 + a, T3(n) = 3K1 +a , ... , Tn(n) = nK1 + a.
+	 *
+	 *	T(n) = K1 + (2K1 + a) + (3K1 + a) + ... + (nK1 + a) / n              Sacamos factor común
+	 *
+	 *	= (1 + 2 + 3 + ... + n)K1 + n * a / n = (1+n)*n/2n + n*a/n =  
+	 *
+	 */				
+}
+
+........................................
+
+
+Clase 7
+
+Mas Ejercicios
+
+
+java -cp target/libreta-contactos-1.0-SNAPSHOT.jar org.pr2.App show
+
+
+//nombre: Juan García Pérez telefono: 65432145
+
+
+Por qué no utiliza el mítico "java -jar":   
+Porque el pom.xml(p - o - m) no tiene la configuración del plugin que empaqueta mi programa utilizando la configuración Manifest. Nosotros empaquetábamos el .jar en el Manifest.txt. Vilda y Elena 4everRunning. 
+
+Ejercicio 19:
+
+Modificar el pom.xml para no tener que escribir tanto y usar solo el java -jar.
+Se ha ido al API de Maven, ha buscado el plugin que quería y lo ha copiado dentro del apartado <plugin> del código (muy raro, se ha sobrado mazo).
+Posteriormente ha introducido el enunciado para añadir el manifest.
+
+
+ </plugin>
+        <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                        <archive>
+                                <manifest>
+                                        <mainClass>org.pr2.App</mainClass>
+                                </manifest>
+                        </archive>
+                        <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
+                </configuration>
+        </plugin>
+</plugins>
+
+En resumen del ejercicio 19, hemos introducido el código del primer apartado para poder ejecutar senillamente. Solo hay que escribir ahora java -jar target/libreta-contactos-1.0-SNAPSHOT-jar-with-dependencies.jar show
+
+..............................
+
+
+Clase 8
+
+
+El código que buscamos para importar es: 
+<!-- https://mvnrepository.com/artifact/org.jopendocument/jOpenDocument -->
+<dependency>
+    <groupId>org.jopendocument</groupId>
+    <artifactId>jOpenDocument</artifactId>
+    <version>1.3b1</version>
+</dependency>
+(TODO en el API de Maven).
+
+También, para poder generar la hoja de cálculo, hemos de copiar los últimos 3 imports del ejercicio 20.4 en Libreta.
+import javax.swing.table.DefaultTableModel;
+ import javax.swing.table.TableModel;
+ import org.jopendocument.dom.spreadsheet.SpreadSheet;
+Y el código a continuación que genera la Hoja de cálculo, tbn en libreta de contactos (del ej. 20.4).
+Luego modificamos la interfaz para añadir la hoja. 
+Posteriormente, con la clase libreta ya con sus imports y la Hoja de cálculo, hemos compilado:
+
+mvn clean compile assembly:single            (clean para limpiar versiones anteriores).
+
+(java -jar target/libreta... hoja)
+
+Al ejecutar nos crea una hoja de cálculo. Para verla:
+
+soffice output/contactos.ods 
+
+
+
+........................................
+
+Clase 9
+
+
+A continuación, generamos el javadoc. mvn javadoc:javadoc
+Ha colocado el java doc en target/site/apidocs
+.
+
+Siguiente ejercicio 21
+"Arquetipos":
+
+mvn -DartifactId = gran-proyecto -DgroupId = org.pr2
+       -DarchetypeId = maven - quickstart 
+
+Esta es la posibilidad 1: partir del quickstart. Ahora vamos a la opción 2, crear una aplicación web 😗
+Buscamos en el API de maven el código para generar una app web. (El enlace está en el ejercicio 21, es el último de la lista que saldrá, aplicación web).
+Copiamos el código.
+
+mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-webapp -DarchetypeVersion=1.4
+Manda carallo que bien sasle este formato
+Hola hola hola
+lol puedo escribir lo que quieraa
+xd jaja saludos
+bueno de vuelta al ejercicio
+No me deja volver.
+En resumen, con esto hemos creado una app web que abrimos y nos
+dice Hello World.
+A mi me dice Arriba España pero eso depende de la persona.
