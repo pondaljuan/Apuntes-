@@ -635,3 +635,25 @@ Primero creamos una variable que marque el size. Otra el max del array.
 Un metodo boolean para ver si está vacío.
 otro para añadir.
 otro para obtener en la posicion i;
+
+
+...............................................
+
+Clase 11
+
+Para poder eleminar 
+
+public boolean remove(Integer e)
+{
+
+Pasos
+
+1. Crear un repositorio remoto:miArraylist
+2. Crear un proyecto Maven siguiendo el arquetipo quickstart
+3. Dentro del proyecto creado en el paso 2, creamos un repositorio local.
+4. Vinculo el repositorio local con el remoto
+5. Creo un .gitignore para que el repositorio tenga solo los fuentes
+6. Anado pom.xml y  src al repositorio 
+7. Se implementa MiArraylist mediante TDD
+8.creo un directorio ed en src/test/.../pr2
+9. Creo un directorio ed en src
