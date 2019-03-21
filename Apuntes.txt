@@ -605,3 +605,33 @@ No me deja volver.
 En resumen, con esto hemos creado una app web que abrimos y nos
 dice Hello World.
 A mi me dice Arriba España pero eso depende de la persona.
+
+.........................................
+Clase 10
+
+public class ArrayListPGN
+{
+        int size = 0, tamMax = 10;
+        private Integer[] elementData = new Integer[tamMax];
+
+
+        public boolean isEmpty()
+        {
+                return size == 0;
+        }
+
+        public void add(Integer e)
+        {
+                elementData[size++] = e;
+        }
+  public Integer get(int i)
+        {
+                return elementData[i];
+        }
+
+}
+
+Primero creamos una variable que marque el size. Otra el max del array.
+Un metodo boolean para ver si está vacío.
+otro para añadir.
+otro para obtener en la posicion i;
