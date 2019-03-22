@@ -641,19 +641,34 @@ otro para obtener en la posicion i;
 
 Clase 11
 
-Para poder eleminar 
 
-public boolean remove(Integer e)
-{
+Pasos que hemos hecho:
 
-Pasos
+1.- Crear un repositorio remoto: miArrayList.
+2.- Crear un  proyecto Maven siguiendo el arquetipo quickstart.
+3.- Dentro del proyecto creadi en el paso 2, creamos un repositorio local.
+4.- Viviendo el repositorio local con el remoto.
+5.- Creo un .gitignore para que el repositorio tenga sólo los fuentes.
+(vi .gitignore) --> dentro del vi: 
+/target/ 
+ .*
+!/.gitignore
+6.- Añado el pom.xml y src al repositorio.
 
-1. Crear un repositorio remoto:miArraylist
-2. Crear un proyecto Maven siguiendo el arquetipo quickstart
-3. Dentro del proyecto creado en el paso 2, creamos un repositorio local.
-4. Vinculo el repositorio local con el remoto
-5. Creo un .gitignore para que el repositorio tenga solo los fuentes
-6. Anado pom.xml y  src al repositorio 
-7. Se implementa MiArraylist mediante TDD
-8.creo un directorio ed en src/test/.../pr2
-9. Creo un directorio ed en src
+7-  Creo un directorio ed (estructuras de datos) en src/test/.../pr2
+8- Creo un directorio ed en src/main/.../ pr2.
+9 - Mover AppTest.java en src/test/.../ed /MiArrayListTest.java
+
+10.- crear un enlace simbólico a MiArrayListTest.java. (ln - s src/test.../MiArrayListTest.java MiArrayListTest.java  
+
+11 .-Cambiamos el nombre de la clase dentro del fichero MiArryListTest.java .  También hay que cambiar el nombre del paquete dentro del fichero.
+
+Parte 1. A continuacion parte 2.
+
+12.- TDD  -) Diseño e implemento pruebas para isEmpty();  
+ 1) Un arrayList recién creado está vacío.
+  2) Un array list sobre el que he realizado solamente una operación de añadido no está vacío.
+ 3) Un array list sobre el que he realizado una operación de añadido y otra de borrado que 
+ha tenido éxito está vacío.
+  4) Un array list sobre el que he realizado una operación de añadido y otra de borrado pero sin éxito, no está vacío.
+
